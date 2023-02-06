@@ -1,13 +1,13 @@
-import Input from "../components/Input";
+import HangmanInformations from "../components/HangmanInformations";
 import WordToFind from "../components/WordToFind";
 
 const Home = () => {
   return (
     <div className="d-flex flex-column pt-3 align-items-center justify-content-center">
       <h1 className="text-white">React Pendu</h1>
-      <WordToFind WordToFind={"C_ _ _ _ _"} />
+      <WordToFind />
       <div className="d-flex align-items-center flex-column">
-        <Input errorsTitle="Nombres d'érreurs : " lettersUsed={"A K J"} />
+        <HangmanInformations />
       </div>
     </div>
   );

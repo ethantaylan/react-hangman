@@ -10,3 +10,16 @@ body,
   height: 100%;
   background-color: black;
 }
+
+.letter-button {
+  border-radius: 2px;
+  border: none;
+  margin: 4px;
+  width: 30px;
+}
+
+.letter-button:hover {
+  background-color: rgb(192, 218, 241);
+  transform: scale(1.1);
+  transition: 0.2s;
+}
