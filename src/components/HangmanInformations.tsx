@@ -1,10 +1,18 @@
 import React from "react";
 
-const HangmanInformations: React.FC = () => {
+interface HangmanInformationsProps {
+  fails: number;
+  correctGuesses: string[];
+}
+
+const HangmanInformations: React.FC<HangmanInformationsProps> = ({
+  fails,
+  correctGuesses,
+}) => {
   return (
     <div>
-      <span className="text-danger">Nommbres d'erreurs : 0</span>
-      <h5 className="text-white">Lettres utilisées : </h5>
+      <span className="text-danger">Nombres d'erreurs : {fails}</span>
+      <h5 className="text-success">{correctGuesses}</h5>
     </div>
   );
 };

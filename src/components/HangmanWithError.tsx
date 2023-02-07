@@ -14,7 +14,7 @@ const Words = [
   "Exasperer",
 ];
 
-const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
+export const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
 
 const WordToFind: React.FC = () => {
   const [replacedWord, setReplacedWord] = React.useState<string[]>([]);
@@ -36,13 +36,16 @@ const WordToFind: React.FC = () => {
   }, []);
 
   const handleLetterClick = (letter: string) => {
-    let newReplacedWord = [...replacedWord];
-    for (let i = 0; i < randomWord.length; i++) {
-      if (randomWord[i].toUpperCase() === letter) {
-        newReplacedWord[i] = letter;
+    setReplacedWord((replacedWord) => {
+      let newReplacedWord = replacedWord.slice();
+      for (let i = 0; i < randomWord.length; i++) {
+        if (randomWord[i].toUpperCase() === letter) {
+          newReplacedWord[i] = letter;
+        }
       }
-    }
-    setReplacedWord(newReplacedWord);
+  
+      return newReplacedWord;
+    });
   };
 
   return (
