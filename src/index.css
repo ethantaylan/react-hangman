@@ -1,3 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
+
+.hangman-font {
+  font-family: "Shadows Into Light", cursive;
+}
+
 * {
   margin: 0px;
   padding: 0px;
@@ -14,12 +20,37 @@ body,
 .letter-button {
   border-radius: 2px;
   border: none;
-  margin: 4px;
-  width: 30px;
+  margin: 6px;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(255, 255, 255);
 }
 
 .letter-button:hover {
   background-color: rgb(192, 218, 241);
   transform: scale(1.1);
   transition: 0.2s;
+}
+
+.hangman-image {
+  filter: invert(1);
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.disabled-letter {
+  border-radius: 2px;
+  border: none;
+  margin: 6px;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.4;
+  transition: 0.2s;
+}
+
+.negatif {
+  filter: invert(1);
+  width: 300px;
+  object-fit: contain;
 }
