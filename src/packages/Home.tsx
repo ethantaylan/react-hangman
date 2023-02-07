@@ -1,16 +1,25 @@
 import Hangman from "../components/Hangman";
-import useMediaQuery from "../hooks/useMediaQuery";
 import Logo from "../assets/logo.png";
+import React from "react";
 
 const Home: React.FC = () => {
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    setLoading(false);
+    console.log(loading);
+  }, [loading]);
+
   return (
     <div className="d-flex flex-column p-5 align-items-center justify-content-center">
-      <img
-        className="negatif"
-        src={Logo}
-        alt="React Hangman icon"
-      />
-      <Hangman />
+      {loading ? (
+        "Loading..."
+      ) : (
+        <React.Fragment>
+          <img className="negatif" src={Logo} alt="React Hangman icon" />
+          <Hangman />
+        </React.Fragment>
+      )}
     </div>
   );
 };

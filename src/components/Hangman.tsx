@@ -23,7 +23,7 @@ interface Alphabet {
 }
 
 const Hangman: React.FC = () => {
-  const [remainingTries, setremainingTries] = React.useState<number>(11);
+  const [remainingTries, setRemainingTries] = React.useState<number>(11);
   const [correctGuesses, setCorrectGuesses] = React.useState<string[]>([]);
   const [selectedWord, setSelectedWord] = React.useState("");
   const [replacedWord, setReplacedWord] = React.useState<string[]>([]);
@@ -31,6 +31,7 @@ const Hangman: React.FC = () => {
   const [hangman, setHangman] = React.useState<string>(newgame);
   const [win, setWin] = React.useState<boolean>(false);
   const [show, setShow] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   const matches = useMediaQuery("(max-width:768px)");
 
@@ -54,14 +55,18 @@ const Hangman: React.FC = () => {
 
   const resetGame = () => {
     getRandomWord(words);
-    setremainingTries(11);
+    setRemainingTries(11);
     setCorrectGuesses([""]);
     setNewGameBtn(false);
     setHangman(newgame);
     setAlphabet(defaultAlphabet);
     setReplacedWord(replaceWithUnderscores(randomWord));
-    setWin(false);
   };
+
+  React.useEffect(() => {
+    setLoading(false);
+    console.log(loading);
+  }, [loading]);
 
   React.useEffect(() => {
     switch (remainingTries) {
@@ -109,7 +114,7 @@ const Hangman: React.FC = () => {
   React.useEffect(() => {
     setSelectedWord(randomWord);
     setReplacedWord(replaceWithUnderscores(randomWord));
-  }, [randomWord]);
+  }, []);
 
   React.useEffect(() => {
     if (replacedWord.join("").includes(randomWord)) {
@@ -145,63 +150,65 @@ const Hangman: React.FC = () => {
         return newReplacedWord;
       });
     } else {
-      setremainingTries(remainingTries - 1);
+      setRemainingTries(remainingTries - 1);
     }
   };
 
   return (
-    <div className="d-flex mt-5 text-white align-items-center mb-5 flex-column">
-      {show && (
-        <WinModal
-          onClick={() => {
-            resetGame();
-            setShow(false);
-          }}
-          show={show}
-          onHide={() => setShow(false)}
-        >
-          {win && <img className="win-gif" src={WinGif}></img>}
-        </WinModal>
-      )}
-      <img
-        height={matches ? 200 : 220}
-        width={matches ? 300 : 350}
-        className="mb-5 hangman-image"
-        src={hangman}
-        alt=""
-      />
-      <HangmanInformations
-        fails={remainingTries}
-        correctGuesses={correctGuesses}
-      />
-      <span className="mb-5 display-6">{replacedWord.join(" ")}</span>
-      <div
-        className={`d-flex justify-content-center flex-wrap ${
-          matches ? "w-100" : "w-50"
-        }`}
-      >
-        {alphabet.map(({ letter, disabled }, index: number) => (
-          <button
-            key={index}
-            className={`${disabled ? "disabled-letter" : "letter-button"}`}
-            onClick={() => handleLetterClick(letter)}
-            disabled={disabled}
+    <React.Fragment>
+      <div className="d-flex mt-5 text-white align-items-center mb-5 flex-column">
+        {show && (
+          <WinModal
+            onClick={() => {
+              resetGame();
+              setShow(false);
+            }}
+            show={show}
+            onHide={() => setShow(false)}
           >
-            {letter}
-          </button>
-        ))}
-      </div>
-      {newGameBtn && (
-        <button
-          onClick={() => {
-            resetGame();
-          }}
-          className="mt-5 btn btn-outline-secondary"
+            {win && <img className="win-gif" src={WinGif}></img>}
+          </WinModal>
+        )}
+        <img
+          height={matches ? 200 : 220}
+          width={matches ? 300 : 350}
+          className="mb-5 hangman-image"
+          src={hangman}
+          alt=""
+        />
+        <HangmanInformations
+          fails={remainingTries}
+          correctGuesses={correctGuesses}
+        />
+        <span className="mb-5 display-6">{replacedWord.join(" ")}</span>
+        <div
+          className={`d-flex justify-content-center flex-wrap ${
+            matches ? "w-100" : "w-50"
+          }`}
         >
-          Start new game
-        </button>
-      )}
-    </div>
+          {alphabet.map(({ letter, disabled }, index: number) => (
+            <button
+              key={index}
+              className={`${disabled ? "disabled-letter" : "letter-button"}`}
+              onClick={() => handleLetterClick(letter)}
+              disabled={disabled}
+            >
+              {letter}
+            </button>
+          ))}
+        </div>
+        {newGameBtn && (
+          <button
+            onClick={() => {
+              resetGame();
+            }}
+            className="mt-5 btn btn-outline-secondary"
+          >
+            Start new game
+          </button>
+        )}
+      </div>
+    </React.Fragment>
   );
 };
 
