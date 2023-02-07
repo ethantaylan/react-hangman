@@ -1,6 +1,4 @@
-
-
-+ image hangman qui change au fur et à mesures des erreurs (check /assets)
-+ disable des buttons
-
++ ecran trop getRandomWord
++ mot trouvé -> animation + btn resetGame
++ nombre de chances restantes
 

@@ -13,7 +13,9 @@ import h from "../assets/hangman/8.png";
 import i from "../assets/hangman/9.png";
 import j from "../assets/hangman/10.png";
 import gameover from "../assets/hangman/game-over.png";
+import WinGif from "../assets/hangman/win.gif";
 import useMediaQuery from "../hooks/useMediaQuery";
+import { WinModal } from "./WinModal";
 
 interface Alphabet {
   letter: string;
@@ -21,13 +23,14 @@ interface Alphabet {
 }
 
 const Hangman: React.FC = () => {
-  const [incorrectGuesses, setIncorrectGuesses] = React.useState<number>(0);
+  const [remainingTries, setremainingTries] = React.useState<number>(11);
   const [correctGuesses, setCorrectGuesses] = React.useState<string[]>([]);
   const [selectedWord, setSelectedWord] = React.useState("");
   const [replacedWord, setReplacedWord] = React.useState<string[]>([]);
-  const [usedLetters, setUsedLetters] = React.useState<string[]>([]);
   const [newGameBtn, setNewGameBtn] = React.useState<boolean>(false);
   const [hangman, setHangman] = React.useState<string>(newgame);
+  const [win, setWin] = React.useState<boolean>(false);
+  const [show, setShow] = React.useState(false);
 
   const matches = useMediaQuery("(max-width:768px)");
 
@@ -51,74 +54,78 @@ const Hangman: React.FC = () => {
 
   const resetGame = () => {
     getRandomWord(words);
-    setIncorrectGuesses(0);
+    setremainingTries(11);
     setCorrectGuesses([""]);
-    setUsedLetters([""]);
     setNewGameBtn(false);
     setHangman(newgame);
     setAlphabet(defaultAlphabet);
     setReplacedWord(replaceWithUnderscores(randomWord));
+    setWin(false);
   };
 
   React.useEffect(() => {
-    if (incorrectGuesses === 11) {
-      setNewGameBtn(true);
-      return;
-    }
-  }, [incorrectGuesses]);
-
-  React.useEffect(() => {
-    switch (incorrectGuesses) {
-      case 0:
-        break;
-      case 1:
-        setHangman(a);
-        break;
-      case 2:
-        setHangman(b);
-        break;
-      case 3:
-        setHangman(c);
-        break;
-      case 4:
-        setHangman(d);
-        break;
-      case 5:
-        setHangman(e);
-        break;
-      case 6:
-        setHangman(f);
-        break;
-      case 7:
-        setHangman(g);
-        break;
-      case 8:
-        setHangman(h);
-        break;
-      case 9:
-        setHangman(i);
+    switch (remainingTries) {
+      case 11:
+        setNewGameBtn(false);
+        setHangman(newgame);
         break;
       case 10:
+        setHangman(a);
+        break;
+      case 9:
+        setHangman(b);
+        break;
+      case 8:
+        setHangman(c);
+        break;
+      case 7:
+        setHangman(d);
+        break;
+      case 6:
+        setHangman(e);
+        break;
+      case 5:
+        setHangman(f);
+        break;
+      case 4:
+        setHangman(g);
+        break;
+      case 3:
+        setHangman(h);
+        break;
+      case 2:
+        setHangman(i);
+        break;
+      case 1:
         setHangman(j);
         break;
-      case 11:
+      case 0:
+        setNewGameBtn(true);
         setHangman(gameover);
         break;
     }
-  }, [incorrectGuesses]);
+  }, [remainingTries]);
 
   React.useEffect(() => {
     setSelectedWord(randomWord);
     setReplacedWord(replaceWithUnderscores(randomWord));
-  }, []);
+  }, [randomWord]);
+
+  React.useEffect(() => {
+    if (replacedWord.join("").includes(randomWord)) {
+      setWin(true);
+      setShow(true);
+    }
+  }, [replacedWord]);
 
   const handleLetterClick = (letter: string) => {
-    if (incorrectGuesses === 11) {
-      setNewGameBtn(true);
-      return;
+    if (remainingTries === 11) {
+      setNewGameBtn(false);
     }
 
-    setUsedLetters((usedLetters) => [...usedLetters, letter]);
+    if (remainingTries === 0) {
+      return;
+    }
 
     const index = alphabet.findIndex((l) => l.letter === letter);
     const element = alphabet[index];
@@ -127,8 +134,7 @@ const Hangman: React.FC = () => {
     alphabet.splice(index, 1, element);
 
     if (selectedWord.includes(letter)) {
-      setCorrectGuesses((correctGuesses) => [...correctGuesses, letter]);
-
+      setCorrectGuesses([...correctGuesses, letter]);
       setReplacedWord((replacedWord) => {
         const newReplacedWord = [...replacedWord];
         for (let i = 0; i < selectedWord.length; i++) {
@@ -139,12 +145,24 @@ const Hangman: React.FC = () => {
         return newReplacedWord;
       });
     } else {
-      setIncorrectGuesses((incorrectGuesses) => incorrectGuesses + 1);
+      setremainingTries(remainingTries - 1);
     }
   };
 
   return (
     <div className="d-flex mt-5 text-white align-items-center mb-5 flex-column">
+      {show && (
+        <WinModal
+          onClick={() => {
+            resetGame();
+            setShow(false);
+          }}
+          show={show}
+          onHide={() => setShow(false)}
+        >
+          {win && <img className="win-gif" src={WinGif}></img>}
+        </WinModal>
+      )}
       <img
         height={matches ? 200 : 220}
         width={matches ? 300 : 350}
@@ -152,8 +170,16 @@ const Hangman: React.FC = () => {
         src={hangman}
         alt=""
       />
+      <HangmanInformations
+        fails={remainingTries}
+        correctGuesses={correctGuesses}
+      />
       <span className="mb-5 display-6">{replacedWord.join(" ")}</span>
-      <div className="d-flex justify-content-center flex-wrap w-75">
+      <div
+        className={`d-flex justify-content-center flex-wrap ${
+          matches ? "w-100" : "w-50"
+        }`}
+      >
         {alphabet.map(({ letter, disabled }, index: number) => (
           <button
             key={index}
@@ -165,13 +191,6 @@ const Hangman: React.FC = () => {
           </button>
         ))}
       </div>
-      <span className="mt-5 text-secondary">
-        Used letters : {usedLetters?.map((letter) => letter).join(" - ")}
-      </span>
-      <HangmanInformations
-        fails={incorrectGuesses}
-        correctGuesses={correctGuesses}
-      />
       {newGameBtn && (
         <button
           onClick={() => {

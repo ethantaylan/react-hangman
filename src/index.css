@@ -18,12 +18,12 @@ body,
 }
 
 .letter-button {
-  border-radius: 2px;
   border: none;
   margin: 6px;
   width: 40px;
   height: 40px;
   background-color: rgb(255, 255, 255);
+  font-weight: 500;
 }
 
 .letter-button:hover {
@@ -39,12 +39,11 @@ body,
 }
 
 .disabled-letter {
-  border-radius: 2px;
   border: none;
   margin: 6px;
   width: 40px;
   height: 40px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.2);
   opacity: 0.4;
   transition: 0.2s;
 }
@@ -53,4 +52,45 @@ body,
   filter: invert(1);
   width: 300px;
   object-fit: contain;
+}
+
+.modal-body {
+  padding: 0px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid darkgray;
+}
+
+.win-gif {
+  object-position: center;
+  width: 350px;
+}
+
+.modal-lg,
+.modal-sm,
+.modal-md,
+.modal {
+  --bs-modal-width: fit-content !important;
+  --bs-modal-bg: unset !important;
+}
+
+.fade {
+  opacity: 0.9 !important;
+}
+
+.reset-game-button {
+  background-color: black !important;
+  border-radius: 0px;
+  border: none;
+}
+
+.width-unset {
+  width: fit-content;
+}
+
+.modal-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
