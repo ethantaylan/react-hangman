@@ -1,28 +1,17 @@
 import React from "react";
 import HangmanInformations from "./HangmanInformations";
-
-const words = [
-  "bulles",
-  "avion",
-  "portable",
-  "television",
-  "demarreur",
-  "clavier",
-  "abordable",
-  "adorable",
-  "wagon",
-  "expediteur",
-  "exasperer",
-];
+import { words } from "./words";
 
 const alphabet = "abcdefghijklmnopqrstuvwxyz".toUpperCase().split("");
 
 const Hangman: React.FC = () => {
-  const [incorrectGuesses, setIncorrectGuesses] = React.useState(0);
+  const [incorrectGuesses, setIncorrectGuesses] = React.useState<number>(0);
   const [correctGuesses, setCorrectGuesses] = React.useState<string[]>([]);
   const [selectedWord, setSelectedWord] = React.useState("");
   const [replacedWord, setReplacedWord] = React.useState<string[]>([]);
   const [usedLetters, setUsedLetters] = React.useState<string[]>([]);
+  const [msgToUser, setMsgToUser] = React.useState<string>("");
+  const [newGameBtn, setNewGameBtn] = React.useState<boolean>(false);
 
   const getRandomWord = (words: string[]) => {
     const randomIndex = Math.floor(Math.random() * words.length);
@@ -32,6 +21,32 @@ const Hangman: React.FC = () => {
   const replaceWithUnderscores = (word: string) => {
     return "_".repeat(word.length).split("");
   };
+
+  React.useEffect(() => {
+    switch (incorrectGuesses) {
+      case 0:
+        setMsgToUser("Welcome to React Hangman :)");
+        break;
+      case 1:
+        setMsgToUser("hmm... wrong guess");
+        break;
+      case 2:
+        setMsgToUser("you look good, it's ok right now");
+        break;
+      case 3:
+        setMsgToUser("ok.. you are actually fine");
+        break;
+      case 4:
+        setMsgToUser("arf... care, another wrong guess !!");
+        break;
+      case 5:
+        setMsgToUser("you have one more try...");
+        break;
+      case 6:
+        setMsgToUser("You lost :(");
+        break;
+    }
+  }, [incorrectGuesses]);
 
   React.useEffect(() => {
     const randomWord = getRandomWord(words).toUpperCase();
@@ -46,7 +61,7 @@ const Hangman: React.FC = () => {
     }
 
     if (incorrectGuesses === 6) {
-      console.log("you lost");
+      setNewGameBtn(true);
       return;
     }
 
@@ -90,6 +105,15 @@ const Hangman: React.FC = () => {
           </button>
         ))}
       </div>
+      <h1 className="mt-5">{msgToUser}</h1>
+      {newGameBtn && (
+        <button
+          onClick={() => setNewGameBtn(false)}
+          className="mt-5 btn btn-outline-primary"
+        >
+          Start new game
+        </button>
+      )}
     </div>
   );
 };
