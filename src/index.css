@@ -141,3 +141,12 @@ body {
   right: 30px
 }
 
+.logo-mobile {
+
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  width: 150px;
+
+}
+

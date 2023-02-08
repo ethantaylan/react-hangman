@@ -21,29 +21,9 @@ const Home: React.FC = () => {
   return (
     <div className="d-flex flex-column p-4 align-items-center justify-content-center">
       <div className="reset-difficulty">
-        <small
-          onClick={() => {
-            setDifficultyMenu(true);
-          }}
-          className="text-white cursor-pointer me-5"
-        >
-          Change difficulty
-        </small>
-        <small className="">
-          {" "}
-          <a
-            target="_blank"
-            href="https://github.com/ethantaylan"
-            className="bold no-text-decoration text-white cursor-pointer"
-          >
-            <AiFillGithub size={25} />
-          </a>
-        </small>
-      </div>
-      <img className="negatif" src={Logo} alt="React Hangman logo" />
       {selectedDifficulty && (
         <div className="d-flex flex-column">
-          <small className="text-secondary mt-4">
+          <small className="text-secondary">
             Difficulty :{" "}
             <span className={`text-${difficultyColor}`}>
               {selectedDifficulty}
@@ -51,6 +31,22 @@ const Home: React.FC = () => {
           </small>
         </div>
       )}
+      
+        <small
+          onClick={() => {
+            setDifficultyMenu(true);
+          }}
+          className="text-white cursor-pointer me-5"
+        >
+          
+          Change difficulty
+          
+        </small>
+        
+
+      </div>
+      <img className="negatif logo-mobile" src={Logo} alt="React Hangman logo" />
+
 
       {difficultyMenu ? (
         <React.Fragment>
