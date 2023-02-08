@@ -10,12 +10,12 @@ const Home: React.FC = () => {
   }, [loading]);
 
   return (
-    <div className="d-flex flex-column p-5 align-items-center justify-content-center">
+    <div className="d-flex flex-column p-4 align-items-center justify-content-center">
       {loading ? (
         "Loading..."
       ) : (
         <React.Fragment>
-          <img className="negatif" src={Logo} alt="React Hangman icon" />
+          <img className="negatif" src={Logo} alt="React Hangman logo" />
           <Hangman />
         </React.Fragment>
       )}

@@ -22,14 +22,17 @@ body,
   margin: 6px;
   width: 40px;
   height: 40px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(82, 82, 82);
   font-weight: 500;
+  border-radius: 8px;
+  color: rgb(255, 255, 255);
 }
 
 .letter-button:hover {
   background-color: rgb(192, 218, 241);
   transform: scale(1.1);
   transition: 0.2s;
+  color:rgb(82, 82, 82)
 }
 
 .hangman-image {
@@ -50,7 +53,7 @@ body,
 
 .negatif {
   filter: invert(1);
-  width: 300px;
+  width: 200px;
   object-fit: contain;
 }
 
