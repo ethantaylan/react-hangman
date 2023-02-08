@@ -49,7 +49,7 @@ const Home: React.FC = () => {
 
 
       {difficultyMenu ? (
-        <React.Fragment>
+        <div className="difficulty-menu">
           <span className="text-white mt-5">Choose difficulty:</span>
           <div className="text-white d-flex">
             <button
@@ -77,7 +77,7 @@ const Home: React.FC = () => {
               Hard
             </button>
           </div>
-        </React.Fragment>
+        </div>
       ) : (
         <React.Fragment>
           {selectedDifficulty === "Easy" && <HangmanEasy />}
