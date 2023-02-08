@@ -8,7 +8,7 @@ interface HangmanInformationsProps {
 const HangmanInformations: React.FC<HangmanInformationsProps> = ({ fails }) => {
   return (
     <div className="mt-5">
-      <span className="h6 text-danger">Essais restants : {fails}</span>
+      <small className="text-danger">Remaining tries : <span className="bold">{fails}</span></small>
     </div>
   );
 };

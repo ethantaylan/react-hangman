@@ -1,35 +1,20 @@
 import React from "react";
-import HangmanInformations from "./HangmanInformations";
-import { words } from "./words";
-import newgame from "../assets/hangman/new-game.png";
-import a from "../assets/hangman/1.png";
-import b from "../assets/hangman/2.png";
-import c from "../assets/hangman/3.png";
-import d from "../assets/hangman/4.png";
-import e from "../assets/hangman/5.png";
-import f from "../assets/hangman/6.png";
-import g from "../assets/hangman/7.png";
-import h from "../assets/hangman/8.png";
-import i from "../assets/hangman/9.png";
-import j from "../assets/hangman/10.png";
-import gameover from "../assets/hangman/game-over.png";
-import WinGif from "../assets/hangman/win.gif";
-import useMediaQuery from "../hooks/useMediaQuery";
-import { WinModal } from "./WinModal";
+import HangmanInformations from "../HangmanInformations/HangmanInformations";
+import newgame from "../../assets/hangman/new-game.png";
+import useMediaQuery from "../../hooks/useMediaQuery";
+import { WinModal } from "../WinModal/WinModal";
 
-interface Alphabet {
-  letter: string;
-  disabled: boolean;
-}
+import { mediumWords } from "../Words/medium";
+import { Alphabet } from "../alphabet";
+import { hangmanImages } from "../hangman-images";
 
-const Hangman: React.FC = () => {
+const HangmanMedium: React.FC = () => {
   const [remainingTries, setRemainingTries] = React.useState<number>(11);
   const [correctGuesses, setCorrectGuesses] = React.useState<string[]>([]);
   const [selectedWord, setSelectedWord] = React.useState("");
   const [replacedWord, setReplacedWord] = React.useState<string[]>([]);
   const [newGameBtn, setNewGameBtn] = React.useState<boolean>(false);
   const [hangman, setHangman] = React.useState<string>(newgame);
-  const [win, setWin] = React.useState<boolean>(false);
   const [show, setShow] = React.useState<boolean>(false);
 
   const matches = useMediaQuery("(max-width:768px)");
@@ -41,85 +26,45 @@ const Hangman: React.FC = () => {
 
   const [alphabet, setAlphabet] = React.useState<Alphabet[]>(defaultAlphabet);
 
-  const getRandomWord = (words: string[]) => {
-    const randomIndex = Math.floor(Math.random() * words.length);
-    return words[randomIndex];
+  // medium DIFFICULTY
+  const getrandomMediumWord = (mediumWords: string[]) => {
+    const randomIndex = Math.floor(Math.random() * mediumWords.length);
+    return mediumWords[randomIndex];
   };
-
-  const [randomWord, setRandomWord] = React.useState<string>(
-    getRandomWord(words).toUpperCase()
+  const [randomMediumWord, setrandomMediumWord] = React.useState<string>(
+    getrandomMediumWord(mediumWords).toUpperCase()
   );
 
   const replaceWithUnderscores = (word: string) => {
     return "_".repeat(word.length).split("");
   };
 
-  const resetGame = () => {
-    console.log(words);
-    setRandomWord(getRandomWord(words).toUpperCase());
-    setSelectedWord(getRandomWord(words));
+  const resetMediumDifficultyGame = () => {
+    const randomMediumWord = getrandomMediumWord(mediumWords).toUpperCase();
+    setrandomMediumWord(randomMediumWord);
+    setSelectedWord(randomMediumWord);
     setRemainingTries(11);
     setCorrectGuesses([""]);
     setNewGameBtn(false);
     setHangman(newgame);
     setAlphabet(defaultAlphabet);
-    setReplacedWord(replaceWithUnderscores(randomWord));
+    setReplacedWord(replaceWithUnderscores(randomMediumWord));
+  };
+
+  const handleHangmanImage = (tries: number) => {
+    setHangman(hangmanImages[tries]);
+    setNewGameBtn(tries === 0);
   };
 
   React.useEffect(() => {
-    switch (remainingTries) {
-      case 11:
-        setNewGameBtn(false);
-        setHangman(newgame);
-        break;
-      case 10:
-        setHangman(a);
-        break;
-      case 9:
-        setHangman(b);
-        break;
-      case 8:
-        setHangman(c);
-        break;
-      case 7:
-        setHangman(d);
-        break;
-      case 6:
-        setHangman(e);
-        break;
-      case 5:
-        setHangman(f);
-        break;
-      case 4:
-        setHangman(g);
-        break;
-      case 3:
-        setHangman(h);
-        break;
-      case 2:
-        setHangman(i);
-        break;
-      case 1:
-        setHangman(j);
-        break;
-      case 0:
-        setNewGameBtn(true);
-        setHangman(gameover);
-        break;
-    }
+    handleHangmanImage(remainingTries);
   }, [remainingTries]);
 
   React.useEffect(() => {
-    if (replacedWord.join("").includes(randomWord)) {
-      setWin(true);
+    if (replacedWord.join("").includes(randomMediumWord)) {
       setShow(true);
     }
   }, [replacedWord]);
-
-  React.useEffect(() => {
-    setSelectedWord(randomWord);
-    setReplacedWord(replaceWithUnderscores(randomWord));
-  }, [selectedWord]);
 
   const handleLetterClick = (letter: string) => {
     if (remainingTries === 11) {
@@ -152,29 +97,33 @@ const Hangman: React.FC = () => {
     }
   };
 
+  React.useEffect(() => {
+    setReplacedWord(replaceWithUnderscores(randomMediumWord));
+    setSelectedWord(randomMediumWord);
+    console.log(selectedWord)
+  }, [selectedWord]);
+
   return (
     <React.Fragment>
       <div className="d-flex mt-5 text-white align-items-center mb-5 flex-column">
         {show && (
           <WinModal
             onClick={() => {
-              resetGame();
+              resetMediumDifficultyGame();
               setShow(false);
             }}
             show={show}
             onHide={() => setShow(false)}
-          >
-            {win && <img className="win-gif" src={WinGif}></img>}
-          </WinModal>
+          />
         )}
-        <img
-          height={matches ? 200 : 220}
-          width={matches ? 300 : 350}
-          className="mb-5 hangman-image"
-          src={hangman}
-          alt=""
-          onClick={() => resetGame()}
-        />
+          <img
+            height={matches ? 200 : 220}
+            width={matches ? 300 : 350}
+            className='mb-5 hangman-image'
+            src={hangman}
+            alt="Hangman"
+          />
+
         <HangmanInformations
           fails={remainingTries}
           correctGuesses={correctGuesses}
@@ -199,7 +148,7 @@ const Hangman: React.FC = () => {
         {newGameBtn && (
           <button
             onClick={() => {
-              resetGame();
+              resetMediumDifficultyGame();
             }}
             className="mt-5 btn btn-outline-secondary"
           >
@@ -211,4 +160,4 @@ const Hangman: React.FC = () => {
   );
 };
 
-export default Hangman;
+export default HangmanMedium;

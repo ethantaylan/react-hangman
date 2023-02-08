@@ -32,13 +32,27 @@ body,
   background-color: rgb(192, 218, 241);
   transform: scale(1.1);
   transition: 0.2s;
-  color:rgb(82, 82, 82)
+  color: rgb(82, 82, 82);
 }
 
 .hangman-image {
   filter: invert(1);
   object-fit: contain;
   object-position: bottom;
+}
+
+body {
+  animation-name: fadeIn;
+  animation-duration: 2s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .disabled-letter {
@@ -97,3 +111,33 @@ body,
   justify-content: center;
   align-items: center;
 }
+
+.select-difficulty-buttons {
+  width: 100px;
+}
+
+.copyright {
+  position: absolute;
+  font-size: 11px;
+  bottom: 10px;
+  display: none;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.no-text-decoration {
+  text-decoration: none;
+}
+
+.reset-difficulty {
+  position: absolute;
+  top: 30px;
+  right: 30px
+}
+
