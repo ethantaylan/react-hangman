@@ -30,8 +30,7 @@ const Hangman: React.FC = () => {
   const [newGameBtn, setNewGameBtn] = React.useState<boolean>(false);
   const [hangman, setHangman] = React.useState<string>(newgame);
   const [win, setWin] = React.useState<boolean>(false);
-  const [show, setShow] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
+  const [show, setShow] = React.useState<boolean>(false);
 
   const matches = useMediaQuery("(max-width:768px)");
 
@@ -47,14 +46,18 @@ const Hangman: React.FC = () => {
     return words[randomIndex];
   };
 
-  const randomWord = getRandomWord(words).toUpperCase();
+  const [randomWord, setRandomWord] = React.useState<string>(
+    getRandomWord(words).toUpperCase()
+  );
 
   const replaceWithUnderscores = (word: string) => {
     return "_".repeat(word.length).split("");
   };
 
   const resetGame = () => {
-    getRandomWord(words);
+    console.log(words);
+    setRandomWord(getRandomWord(words).toUpperCase());
+    setSelectedWord(getRandomWord(words));
     setRemainingTries(11);
     setCorrectGuesses([""]);
     setNewGameBtn(false);
@@ -62,11 +65,6 @@ const Hangman: React.FC = () => {
     setAlphabet(defaultAlphabet);
     setReplacedWord(replaceWithUnderscores(randomWord));
   };
-
-  React.useEffect(() => {
-    setLoading(false);
-    console.log(loading);
-  }, [loading]);
 
   React.useEffect(() => {
     switch (remainingTries) {
@@ -112,16 +110,16 @@ const Hangman: React.FC = () => {
   }, [remainingTries]);
 
   React.useEffect(() => {
-    setSelectedWord(randomWord);
-    setReplacedWord(replaceWithUnderscores(randomWord));
-  }, []);
-
-  React.useEffect(() => {
     if (replacedWord.join("").includes(randomWord)) {
       setWin(true);
       setShow(true);
     }
   }, [replacedWord]);
+
+  React.useEffect(() => {
+    setSelectedWord(randomWord);
+    setReplacedWord(replaceWithUnderscores(randomWord));
+  }, [selectedWord]);
 
   const handleLetterClick = (letter: string) => {
     if (remainingTries === 11) {
@@ -175,6 +173,7 @@ const Hangman: React.FC = () => {
           className="mb-5 hangman-image"
           src={hangman}
           alt=""
+          onClick={() => resetGame()}
         />
         <HangmanInformations
           fails={remainingTries}

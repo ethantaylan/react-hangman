@@ -7,7 +7,6 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     setLoading(false);
-    console.log(loading);
   }, [loading]);
 
   return (
