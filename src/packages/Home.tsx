@@ -3,7 +3,6 @@ import React from "react";
 import HangmanMedium from "../components/HangmanDifficulty/HangmanMedium";
 import HangmanEasy from "../components/HangmanDifficulty/HangmanEasy";
 import HangmanHard from "../components/HangmanDifficulty/HangmanHard";
-import { AiFillGithub } from "react-icons/ai";
 
 const Home: React.FC = () => {
   const [selectedDifficulty, setSelectedDifficulty] = React.useState("");
@@ -21,32 +20,33 @@ const Home: React.FC = () => {
   return (
     <div className="d-flex flex-column p-4 align-items-center justify-content-center">
       <div className="reset-difficulty">
-      {selectedDifficulty && (
-        <div className="d-flex flex-column">
-          <small className="text-secondary">
-            Difficulty :{" "}
-            <span className={`text-${difficultyColor}`}>
-              {selectedDifficulty}
-            </span>
+        {selectedDifficulty && (
+          <div className="d-flex flex-column">
+            <small className="text-secondary">
+              Difficulty :{" "}
+              <span className={`text-${difficultyColor}`}>
+                {selectedDifficulty}
+              </span>
+            </small>
+          </div>
+        )}
+
+        {!difficultyMenu &&
+          <small
+            onClick={() => {
+              setDifficultyMenu(true);
+            }}
+            className="text-white cursor-pointer"
+          >
+            Change difficulty
           </small>
-        </div>
-      )}
-      
-        <small
-          onClick={() => {
-            setDifficultyMenu(true);
-          }}
-          className="text-white cursor-pointer me-5"
-        >
-          
-          Change difficulty
-          
-        </small>
-        
-
+        }
       </div>
-      <img className="negatif logo-mobile" src={Logo} alt="React Hangman logo" />
-
+      <img
+        className="negatif logo-mobile"
+        src={Logo}
+        alt="React Hangman logo"
+      />
 
       {difficultyMenu ? (
         <div className="difficulty-menu">

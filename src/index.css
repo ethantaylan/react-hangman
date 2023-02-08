@@ -142,7 +142,6 @@ body {
 }
 
 .logo-mobile {
-
   position: absolute;
   left: 30px;
   top: 30px;
@@ -151,7 +150,6 @@ body {
 }
 
 .difficulty-menu {
-
   position: absolute;
   top: 50%;
   text-align: center;
